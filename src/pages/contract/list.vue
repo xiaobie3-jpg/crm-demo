@@ -91,38 +91,38 @@
     <!-- 新增合同弹窗 -->
     <a-modal v-model:visible="showAdd" title="新增合同" @ok="saveContract" @cancel="planItems = []" width="800px">
       <a-form :model="form" layout="vertical">
-        <a-row :gutter="16">
+        <a-row :gutter="12">
           <a-col :span="12">
             <a-form-item label="客户">
-              <a-select v-model="form.customerId">
+              <a-select v-model="form.customerId" style="width:100%">
                 <a-option v-for="c in customers" :key="c.id" :value="c.id">{{ c.name }}</a-option>
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col :span="12"><a-form-item label="项目名称"><a-input v-model="form.name" /></a-form-item></a-col>
+          <a-col :span="12"><a-form-item label="项目名称"><a-input v-model="form.name" style="width:100%" /></a-form-item></a-col>
           <a-col :span="12">
             <a-form-item label="合同名称">
-              <a-input :model-value="contractName" disabled />
+              <a-input :model-value="contractName" disabled style="width:100%" />
             </a-form-item>
           </a-col>
-          <a-col :span="6"><a-form-item label="合同号"><a-input v-model="form.autoNo" placeholder="如：1599" /></a-form-item></a-col>
-          <a-col :span="6"><a-form-item label="项目编号"><a-input v-model="form.projectNo" placeholder="如：01" /></a-form-item></a-col>
-          <a-col :span="6"><a-form-item label="期号"><a-input v-model="form.phaseNo" placeholder="如：01" /></a-form-item></a-col>
+          <a-col :span="6"><a-form-item label="合同号"><a-input v-model="form.autoNo" placeholder="如：1599" style="width:100%" /></a-form-item></a-col>
+          <a-col :span="6"><a-form-item label="项目编号"><a-input v-model="form.projectNo" placeholder="如：01" style="width:100%" /></a-form-item></a-col>
+          <a-col :span="6"><a-form-item label="期号"><a-input v-model="form.phaseNo" placeholder="如：01" style="width:100%" /></a-form-item></a-col>
           <a-col :span="6">
             <a-form-item label="合同编号预览">
-              <a-input :model-value="contractNoPreview" disabled />
+              <a-input :model-value="contractNoPreview" disabled style="width:100%" />
             </a-form-item>
           </a-col>
           <a-col :span="12">
             <a-form-item label="产品类型">
-              <a-select v-model="form.productType">
+              <a-select v-model="form.productType" style="width:100%">
                 <a-option v-for="p in productTypes" :key="p" :value="p">{{ p }}</a-option>
               </a-select>
             </a-form-item>
           </a-col>
           <a-col :span="12">
             <a-form-item label="客户来源">
-              <a-select v-model="form.source">
+              <a-select v-model="form.source" style="width:100%">
                 <a-option v-for="s in sources" :key="s" :value="s">{{ s }}</a-option>
               </a-select>
             </a-form-item>
@@ -193,7 +193,7 @@ const showPayment = ref(false)
 const payContractId = ref(0)
 const productTypes = ['定制首期', '定制迭代', '模板新开', '模板续费', '代办']
 const sources = ['百度', '抖音', '小红书', '淘宝', 'GEO', '其他', '自拓']
-const fmt = (v: number) => v === 0 ? '0' : (v / 10000).toFixed(1) + 'w'
+const fmt = (v: number) => v === 0 ? '0' : v.toLocaleString('zh-CN')
 
 const payForm = reactive({ amount: 0, channelFee: 0, method: '银行转账', actualDate: '', remark: '' })
 
@@ -341,7 +341,6 @@ const payPlanCols = [
   { title: '期数', dataIndex: 'phase', width: 80 },
   { title: '计划金额', slotName: 'amount', width: 100 },
   { title: '计划日期', dataIndex: 'planDate', width: 110 },
-  { title: '状态', dataIndex: 'status', width: 70 },
 ]
 
 function openPaymentModal(record: any) {

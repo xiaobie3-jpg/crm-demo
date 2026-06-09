@@ -54,7 +54,7 @@ import { users, contracts, productTypes } from '../../mock/data'
 const salesUsers = users.filter(u => u.role === 'sales' || u.role === 'manager')
 const productTypeList = productTypes.filter(p => p.enabled)
 const sources = ['百度', '抖音', '小红书', '淘宝', 'GEO', '其他', '自拓']
-const fmt = (v: number) => v === 0 ? '0' : (v / 10000).toFixed(1) + 'w'
+const fmt = (v: number) => v === 0 ? '0' : v.toLocaleString('zh-CN')
 
 const filter = ref({
   year: 2026,
@@ -151,7 +151,7 @@ function renderChart() {
     tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
     legend: { data: ptNames },
     xAxis: { type: 'category', data: Array.from({ length: 12 }, (_, i) => `${i + 1}月`) },
-    yAxis: { type: 'value', axisLabel: { formatter: (v: number) => (v / 10000).toFixed(0) + 'w' } },
+    yAxis: { type: 'value', axisLabel: { formatter: (v: number) => v.toLocaleString('zh-CN') } },
     series
   }, true)
 }

@@ -99,7 +99,7 @@ const cols = [
 ]
 
 // 必须在template中注册slot render
-function fmtW(v: number) { return (v / 10000).toFixed(1) + 'w' }
+function fmtW(v: number) { return v === 0 ? '0' : v.toLocaleString('zh-CN') }
 
 function editTarget(r: TargetItem) {
   editingId.value = r.id

@@ -44,7 +44,7 @@
         </a-col>
       </a-row>
 
-      <a-card title="月度回款对比（金额单位：万元）">
+      <a-card title="月度回款对比（金额单位：元）">
         <div ref="barChartRef" style="width: 100%; height: 400px"></div>
       </a-card>
 
@@ -73,7 +73,7 @@ import * as echarts from 'echarts'
 import { users, contracts, paymentRecords, targets } from '../../mock/data'
 
 const salesUsers = users.filter(u => u.role === 'sales' || u.role === 'manager')
-const fmt = (v: number) => v === 0 ? '0' : (v / 10000).toFixed(1) + 'w'
+const fmt = (v: number) => v === 0 ? '0' : v.toLocaleString('zh-CN')
 
 const viewMode = ref<'chart' | 'table'>('chart')
 const filter = ref({ ownerId: undefined as number | undefined, year: 2026 })
@@ -187,9 +187,9 @@ const chartData = computed(() => {
 
       const r = taskAmt > 0 ? Math.round((actualAmt / taskAmt) * 100) : 0
 
-      sign.push(+(signAmt / 10000).toFixed(1))
-      task.push(+(taskAmt / 10000).toFixed(1))
-      actual.push(+(actualAmt / 10000).toFixed(1))
+      sign.push(signAmt)
+      task.push(taskAmt)
+      actual.push(actualAmt)
       rate.push(r)
     }
     return { name: u.name, sign, task, actual, rate }
@@ -203,9 +203,9 @@ const summaryStats = computed(() => {
   const totalActual = tableData.value.reduce((s, r) => s + r.year_actual, 0)
   const avgRate = totalTask > 0 ? Math.round((totalActual / totalTask) * 100) : 0
   return [
-    { label: '签约总额', value: (totalSign / 10000).toFixed(1) + 'w', color: '#165dff' },
-    { label: '回款任务', value: (totalTask / 10000).toFixed(1) + 'w', color: '#ff7d00' },
-    { label: '实际回款', value: (totalActual / 10000).toFixed(1) + 'w', color: '#00b42a' },
+    { label: '签约总额', value: totalSign.toLocaleString('zh-CN'), color: '#165dff' },
+    { label: '回款任务', value: totalTask.toLocaleString('zh-CN'), color: '#ff7d00' },
+    { label: '实际回款', value: totalActual.toLocaleString('zh-CN'), color: '#00b42a' },
     { label: '回款完成率', value: avgRate + '%', color: avgRate >= 100 ? '#00b42a' : avgRate >= 80 ? '#ff7d00' : '#f53f3f' },
   ]
 })
@@ -230,7 +230,7 @@ function renderBarChart() {
       tooltip: { trigger: 'axis' },
       legend: { data: ['签约金额', '回款任务', '实际回款'] },
       xAxis: { type: 'category', data: months },
-      yAxis: { type: 'value', name: '万元' },
+      yAxis: { type: 'value', name: '元' },
       series: [
         { name: '签约金额', type: 'bar', data: d.sign, itemStyle: { color: '#3b82f6' } },
         { name: '回款任务', type: 'bar', data: d.task, itemStyle: { color: '#f59e0b' } },
@@ -243,7 +243,7 @@ function renderBarChart() {
       tooltip: { trigger: 'axis' },
       legend: { data: data.map(d => d.name), type: 'scroll' },
       xAxis: { type: 'category', data: months },
-      yAxis: { type: 'value', name: '万元' },
+      yAxis: { type: 'value', name: '元' },
       series: data.map((d, i) => ({
         name: d.name,
         type: 'bar',

@@ -42,7 +42,7 @@
         <template #contractNo="{ record }">{{ getContractNo(record) }}</template>
         <template #customerName="{ record }">{{ getCustName(record) }}</template>
         <template #ownerName="{ record }">{{ getOwnerName(record) }}</template>
-        <template #amount="{ record }">{{ fmtWan(record.amount) }}</template>
+        <template #amount="{ record }">{{ fmt(record.amount) }}</template>
         <template #status="{ record }">
           <a-tag :color="record.status==='已支付'?'green':record.status==='自动生成'?'arcoblue':'gray'" size="small">{{ record.status }}</a-tag>
         </template>
@@ -60,7 +60,7 @@ import dayjs from 'dayjs'
 import { channelFeeRecords, paymentRecords, contracts, customers, users } from '../../mock/data'
 
 const allRecords = ref([...channelFeeRecords])
-const fmtWan = (v: number) => v === 0 ? '0万' : (v / 10000).toFixed(2) + '万'
+const fmt = (v: number) => v === 0 ? '0' : v.toLocaleString('zh-CN')
 
 const filter = reactive({
   ownerIds: [] as number[],

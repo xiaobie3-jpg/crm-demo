@@ -8,7 +8,7 @@
           <template #customer="{ record }">{{ getCust(record.contractId) }}</template>
           <template #contractNo="{ record }">{{ getCt(record.contractId)?.contractNo }}</template>
           <template #owner="{ record }">{{ users.find(u => u.id === getCt(record.contractId)?.ownerId)?.name }}</template>
-          <template #amount="{ record }">{{ (record.amount / 10000).toFixed(2) }}w</template>
+          <template #amount="{ record }">{{ record.amount.toLocaleString('zh-CN') }}</template>
           <template #overdue="{ record }">
             <a-tag :color="record.status==='overdue'?'red':record.planDate===today?'orange':'green'" size="small">
               {{ record.status==='overdue'?'已逾期':record.planDate===today?'今日应收':'未到期' }}
@@ -25,8 +25,8 @@
         <a-table :columns="col2" :data="expiringContracts" size="small" :pagination="{ pageSize: 10 }">
           <template #customer="{ record }">{{ getCust(record.id) }}</template>
           <template #owner="{ record }">{{ users.find(u => u.id === record.ownerId)?.name }}</template>
-          <template #amount="{ record }">{{ (record.amount / 10000).toFixed(2) }}w</template>
-          <template #unpaid="{ record }">{{ (record.unpaidAmount / 10000).toFixed(2) }}w</template>
+          <template #amount="{ record }">{{ record.amount.toLocaleString('zh-CN') }}</template>
+          <template #unpaid="{ record }">{{ record.unpaidAmount.toLocaleString('zh-CN') }}</template>
           <template #actions="{ record }">
             <a-button type="text" size="mini" @click="$router.push(`/contract/detail/${record.id}`)">查看</a-button>
           </template>
@@ -54,7 +54,7 @@
           <template #id="{ record }">PR{{ String(record.id).padStart(4, '0') }}</template>
           <template #customer="{ record }">{{ getCust(record.contractId) }}</template>
           <template #contractNo="{ record }">{{ getCt(record.contractId)?.contractNo }}</template>
-          <template #amount="{ record }">{{ (record.amount / 10000).toFixed(2) }}w</template>
+          <template #amount="{ record }">{{ record.amount.toLocaleString('zh-CN') }}</template>
           <template #submitter="{ record }">{{ users.find(u => u.id === record.submitterId)?.name }}</template>
           <template #actions="{ record }">
             <a-space size="small">
@@ -70,7 +70,7 @@
         <a-table :columns="col5" :data="pendingContracts" size="small" :pagination="{ pageSize: 10 }">
           <template #customer="{ record }">{{ getCust(record.id) }}</template>
           <template #owner="{ record }">{{ users.find(u => u.id === record.ownerId)?.name }}</template>
-          <template #amount="{ record }">{{ (record.amount / 10000).toFixed(2) }}w</template>
+          <template #amount="{ record }">{{ record.amount.toLocaleString('zh-CN') }}</template>
           <template #actions="{ record }">
             <a-button type="text" size="mini" @click="$router.push(`/contract/detail/${record.id}`)">查看</a-button>
           </template>

@@ -92,7 +92,7 @@ onMounted(() => {
 
 function getUser(id: number) { return users.find(u => u.id === id) }
 function getContract(id: number) { return contracts.find(c => c.id === id) }
-function fmtW(v: number) { return v === 0 ? '0' : (v / 10000).toFixed(1) + 'w' }
+function fmtW(v: number) { return v === 0 ? '0' : v.toLocaleString('zh-CN') }
 
 const custContracts = computed(() => customer.value ? contracts.filter(c => c.customerId === customer.value.id) : [])
 const custPayments = computed(() => customer.value ? paymentRecords.filter(p => custContracts.value.some(ct => ct.id === p.contractId)) : [])
@@ -101,9 +101,9 @@ const custFollowups = computed(() => customer.value ? followups.filter(f => f.cu
 const overviewStats = computed(() => ({
   stats: [
     { label: '签约合同数', value: custContracts.value.length },
-    { label: '累计签约金额', value: (custContracts.value.reduce((s, c) => s + c.amount, 0) / 10000).toFixed(1) + 'w' },
-    { label: '累计回款金额', value: (custPayments.value.filter(p => p.status === 'approved').reduce((s, p) => s + p.amount, 0) / 10000).toFixed(1) + 'w' },
-    { label: '未回款金额', value: (custContracts.value.reduce((s, c) => s + c.unpaidAmount, 0) / 10000).toFixed(1) + 'w' },
+    { label: '累计签约金额', value: custContracts.value.reduce((s, c) => s + c.amount, 0).toLocaleString('zh-CN') },
+    { label: '累计回款金额', value: custPayments.value.filter(p => p.status === 'approved').reduce((s, p) => s + p.amount, 0).toLocaleString('zh-CN') },
+    { label: '未回款金额', value: custContracts.value.reduce((s, c) => s + c.unpaidAmount, 0).toLocaleString('zh-CN') },
     { label: '跟进次数', value: custFollowups.value.length },
   ]
 }).stats)

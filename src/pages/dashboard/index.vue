@@ -62,7 +62,7 @@ import * as echarts from 'echarts'
 import dayjs from 'dayjs'
 import { users, contracts, paymentRecords, paymentPlans, targets, customers, followups } from '../../mock/data'
 
-const fmt = (v: any) => v == null ? '--' : typeof v === 'number' ? (v / 10000).toFixed(1) + 'w' : v
+const fmt = (v: any) => v == null ? '--' : typeof v === 'number' ? v.toLocaleString('zh-CN') : v
 
 const statCards = computed(() => {
   const today = dayjs().format('YYYY-MM-DD')
@@ -174,7 +174,7 @@ onMounted(() => {
       tooltip: { trigger: 'axis' },
       legend: { data: ['签约金额', '实际回款'] },
       xAxis: { data: months },
-      yAxis: { type: 'value', axisLabel: { formatter: (v: number) => (v / 10000) + 'w' } },
+      yAxis: { type: 'value', axisLabel: { formatter: (v: number) => v.toLocaleString('zh-CN') } },
       series: [
         { name: '签约金额', type: 'line', data: signData, smooth: true, itemStyle: { color: '#3b82f6' } },
         { name: '实际回款', type: 'line', data: actualData, smooth: true, itemStyle: { color: '#22c55e' } },

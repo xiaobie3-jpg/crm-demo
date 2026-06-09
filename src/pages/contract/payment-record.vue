@@ -70,9 +70,9 @@
         <template #contractNo="{ record }">{{ getContract(record.contractId)?.contractNo }}</template>
         <template #source="{ record }">{{ getContract(record.contractId)?.source }}</template>
         <template #productType="{ record }">{{ getContract(record.contractId)?.productType }}</template>
-        <template #amount="{ record }">{{ fmtWan(record.amount) }}</template>
-        <template #channelFee="{ record }">{{ fmtWan(record.channelFee) }}</template>
-        <template #ourActual="{ record }">{{ fmtWan(record.ourActual) }}</template>
+        <template #amount="{ record }">{{ fmt(record.amount) }}</template>
+        <template #channelFee="{ record }">{{ fmt(record.channelFee) }}</template>
+        <template #ourActual="{ record }">{{ fmt(record.ourActual) }}</template>
         <template #status="{ record }">
           <a-tag size="small" :color="record.status === 'pending' ? 'orange' : record.status === 'approved' ? 'green' : 'red'">
             {{ { pending: '待审批', approved: '已通过', rejected: '已驳回' }[record.status] }}
@@ -166,7 +166,7 @@ const allRecords = ref<PaymentRecord[]>([...paymentRecords])
 const selectedRowKeys = ref<number[]>([])
 
 // ============ 工具函数 ============
-const fmtWan = (v: number) => v === 0 ? '0万' : (v / 10000).toFixed(2) + '万'
+const fmt = (v: number) => v === 0 ? '0' : v.toLocaleString('zh-CN')
 
 function getContract(id: number | undefined) {
   if (!id && id !== 0) return undefined

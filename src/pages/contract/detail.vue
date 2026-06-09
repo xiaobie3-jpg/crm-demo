@@ -161,8 +161,8 @@ const contractName = computed(() => {
 
 // ---------- 格式化 ----------
 const formatMoney = (val: number): string => {
-  if (val === 0) return '0w'
-  return (val / 10000).toFixed(1) + 'w'
+  if (val === 0) return '0'
+  return val.toLocaleString('zh-CN')
 }
 
 const getCustomerName = (id: number): string => {

@@ -44,7 +44,7 @@ import * as echarts from 'echarts'
 import { users, customers, contracts, paymentRecords } from '../../mock/data'
 
 const salesUsers = users.filter(u => u.role === 'sales' || u.role === 'manager')
-const fmt = (v: number) => v === 0 ? '0' : (v / 10000).toFixed(1) + 'w'
+const fmt = (v: number) => v === 0 ? '0' : v.toLocaleString('zh-CN')
 
 const filter = ref({
   range: [] as string[],
@@ -141,7 +141,7 @@ function renderChart() {
     tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
     legend: { data: ['签约总金额', '回款总金额'] },
     xAxis: { type: 'category', data: names },
-    yAxis: { type: 'value', axisLabel: { formatter: (v: number) => (v / 10000).toFixed(0) + 'w' } },
+    yAxis: { type: 'value', axisLabel: { formatter: (v: number) => v.toLocaleString('zh-CN') } },
     series: [
       { name: '签约总金额', type: 'bar', data: signData, itemStyle: { color: '#3b82f6' } },
       { name: '回款总金额', type: 'bar', data: paymentData, itemStyle: { color: '#22c55e' } },

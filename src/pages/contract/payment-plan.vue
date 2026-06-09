@@ -74,9 +74,9 @@
             {{ isPlanOverdue(record) ? '是' : '否' }}
           </a-tag>
         </template>
-        <template #amount="{ record }">{{ fmtWan(record.amount) }}</template>
-        <template #channelFee="{ record }">{{ fmtWan(record.channelFee) }}</template>
-        <template #ourReceivable="{ record }">{{ fmtWan(record.ourReceivable) }}</template>
+        <template #amount="{ record }">{{ fmt(record.amount) }}</template>
+        <template #channelFee="{ record }">{{ fmt(record.channelFee) }}</template>
+        <template #ourReceivable="{ record }">{{ fmt(record.ourReceivable) }}</template>
         <template #actions="{ record }">
           <a-space size="small">
             <a-button type="text" size="mini" @click="openEdit(record)">编辑</a-button>
@@ -144,7 +144,7 @@ import type { PaymentPlan } from '../../mock/data'
 const allPlans = ref<PaymentPlan[]>([...paymentPlans])
 
 // ============ 工具函数 ============
-const fmtWan = (v: number) => v === 0 ? '0万' : (v / 10000).toFixed(2) + '万'
+const fmt = (v: number) => v === 0 ? '0' : v.toLocaleString('zh-CN')
 const today = dayjs().format('YYYY-MM-DD')
 
 function getContract(id: number | undefined) {

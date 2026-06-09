@@ -212,9 +212,9 @@ const stats = computed(() => {
     { label: '累计客户数', value: data.length },
     { label: '累计签约客户', value: data.filter(c => contracts.some(ct => ct.customerId === c.id)).length },
     { label: '累计签约合同数', value: relContracts.length },
-    { label: '累计签约金额', value: (relContracts.reduce((s, ct) => s + ct.amount, 0) / 10000).toFixed(1) + 'w' },
-    { label: '累计回款金额', value: (relPayments.reduce((s, p) => s + p.amount, 0) / 10000).toFixed(1) + 'w' },
-    { label: '累计支付渠道费', value: (relChannelFees.reduce((s, cf) => s + cf.amount, 0) / 10000).toFixed(1) + 'w' },
+    { label: '累计签约金额', value: relContracts.reduce((s, ct) => s + ct.amount, 0).toLocaleString('zh-CN') },
+    { label: '累计回款金额', value: relPayments.reduce((s, p) => s + p.amount, 0).toLocaleString('zh-CN') },
+    { label: '累计支付渠道费', value: relChannelFees.reduce((s, cf) => s + cf.amount, 0).toLocaleString('zh-CN') },
   ]
 })
 

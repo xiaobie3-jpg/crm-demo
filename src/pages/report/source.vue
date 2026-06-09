@@ -36,7 +36,7 @@
 
       <a-row :gutter="16">
         <a-col :span="14">
-          <a-card title="各渠道签约与回款对比（万元）">
+          <a-card title="各渠道签约与回款对比（元）">
             <div ref="barChartRef" style="width: 100%; height: 380px"></div>
           </a-card>
         </a-col>
@@ -69,7 +69,7 @@ import * as echarts from 'echarts'
 import { customers, contracts, paymentRecords, channelFeeRecords, productTypes } from '../../mock/data'
 
 const productTypeList = productTypes.filter(p => p.enabled)
-const fmt = (v: number) => v === 0 ? '0' : (v / 10000).toFixed(1) + 'w'
+const fmt = (v: number) => v === 0 ? '0' : v.toLocaleString('zh-CN')
 const viewMode = ref<'chart' | 'table'>('chart')
 
 const filter = ref({ productType: '' as string })
@@ -163,8 +163,8 @@ const summaryStats = computed(() => {
   return [
     { label: '总获客数', value: totalCust, color: '#3b82f6' },
     { label: '签约转化率', value: avgRate + '%', color: '#22c55e' },
-    { label: '累计回款', value: (totalPay / 10000).toFixed(1) + 'w', color: '#f59e0b' },
-    { label: '我方实收', value: (totalOur / 10000).toFixed(1) + 'w', color: '#165dff' },
+    { label: '累计回款', value: totalPay.toLocaleString('zh-CN'), color: '#f59e0b' },
+    { label: '我方实收', value: totalOur.toLocaleString('zh-CN'), color: '#165dff' },
   ]
 })
 
@@ -186,11 +186,11 @@ function renderAllCharts() {
       tooltip: { trigger: 'axis' },
       legend: { data: ['累计签约额', '累计回款额', '我方实收'] },
       xAxis: { type: 'category', data: data.map(d => d.source), axisLabel: { rotate: 30 } },
-      yAxis: { type: 'value', name: '万元' },
+      yAxis: { type: 'value', name: '元' },
       series: [
-        { name: '累计签约额', type: 'bar', data: data.map(d => +(d.totalSign / 10000).toFixed(1)), itemStyle: { color: '#3b82f6' }, barMaxWidth: 32 },
-        { name: '累计回款额', type: 'bar', data: data.map(d => +(d.totalPayment / 10000).toFixed(1)), itemStyle: { color: '#f59e0b' }, barMaxWidth: 32 },
-        { name: '我方实收', type: 'bar', data: data.map(d => +(d.totalOurActual / 10000).toFixed(1)), itemStyle: { color: '#22c55e' }, barMaxWidth: 32 },
+        { name: '累计签约额', type: 'bar', data: data.map(d => d.totalSign), itemStyle: { color: '#3b82f6' }, barMaxWidth: 32 },
+        { name: '累计回款额', type: 'bar', data: data.map(d => d.totalPayment), itemStyle: { color: '#f59e0b' }, barMaxWidth: 32 },
+        { name: '我方实收', type: 'bar', data: data.map(d => d.totalOurActual), itemStyle: { color: '#22c55e' }, barMaxWidth: 32 },
       ],
       grid: { bottom: 80 }
     }, true)
