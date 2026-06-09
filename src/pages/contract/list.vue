@@ -1,6 +1,16 @@
 <template>
   <div>
     <div class="page-header"><h2>合同列表</h2><a-space><a-button type="primary" @click="showAdd=true"><icon-plus /> 新增合同</a-button><a-button @click="handleExport">导出</a-button></a-space></div>
+
+    <!-- 统计卡片 -->
+    <div class="stat-cards" style="grid-template-columns:repeat(auto-fit, minmax(160px, 1fr))">
+      <a-card class="stat-card" v-for="(s, idx) in contractStats" :key="s.label" :style="{ background: contractGradients[idx] }">
+        <div class="icon-bg"><component :is="contractIcons[idx]" /></div>
+        <div class="label">{{ s.label }}</div>
+        <div class="value" style="font-size:22px">{{ s.value }}</div>
+      </a-card>
+    </div>
+
     <a-card size="small" style="margin-bottom:16px">
       <a-form layout="inline" size="small">
         <a-form-item label="负责人">
@@ -130,9 +140,9 @@
           <a-col :span="8"><a-form-item label="合同金额（元）"><a-input-number v-model="form.amount" :min="0" style="width:100%" /></a-form-item></a-col>
           <a-col :span="8"><a-form-item label="渠道费（元）"><a-input-number v-model="form.channelFee" :min="0" style="width:100%" /></a-form-item></a-col>
           <a-col :span="8"><a-form-item label="我方应收（元）"><a-input-number :model-value="ourReceivable" disabled style="width:100%" /></a-form-item></a-col>
-          <a-col :span="12"><a-form-item label="签约日期"><a-date-picker v-model="form.signDate" style="width:100%" /></a-form-item></a-col>
-          <a-col :span="12"><a-form-item label="到期日期"><a-date-picker v-model="form.expireDate" style="width:100%" /></a-form-item></a-col>
-          <a-col :span="12"><a-form-item label="年维护费（元）"><a-input-number v-model="form.maintenanceFee" :min="0" style="width:100%" /></a-form-item></a-col>
+          <a-col :span="8"><a-form-item label="签约日期"><a-date-picker v-model="form.signDate" style="width:100%" /></a-form-item></a-col>
+          <a-col :span="8"><a-form-item label="到期日期"><a-date-picker v-model="form.expireDate" style="width:100%" /></a-form-item></a-col>
+          <a-col :span="8"><a-form-item label="年维护费（元）"><a-input-number v-model="form.maintenanceFee" :min="0" style="width:100%" /></a-form-item></a-col>
           <a-col :span="24"><a-form-item label="备注"><a-textarea v-model="form.remark" :rows="2" /></a-form-item></a-col>
         </a-row>
       </a-form>
@@ -194,6 +204,28 @@ const payContractId = ref(0)
 const productTypes = ['定制首期', '定制迭代', '模板新开', '模板续费', '代办']
 const sources = ['百度', '抖音', '小红书', '淘宝', 'GEO', '其他', '自拓']
 const fmt = (v: number) => v === 0 ? '0' : v.toLocaleString('zh-CN')
+
+const contractGradients = [
+  'linear-gradient(135deg, #165dff 0%, #4080ff 100%)',
+  'linear-gradient(135deg, #00b42a 0%, #4cd263 100%)',
+  'linear-gradient(135deg, #f77234 0%, #ff9a5e 100%)',
+  'linear-gradient(135deg, #722ed1 0%, #a855f7 100%)',
+  'linear-gradient(135deg, #0fc6c2 0%, #5ce1e6 100%)',
+  'linear-gradient(135deg, #f53f3f 0%, #ff7d7d 100%)',
+]
+const contractIcons = ['IconFile', 'IconMoney', 'IconSafe', 'IconCoin', 'IconCheckCircle', 'IconExclamationCircle'] as any[]
+
+const contractStats = computed(() => {
+  const data = filteredData.value
+  return [
+    { label: '合同总数', value: data.length },
+    { label: '合同总额', value: fmt(data.reduce((s, c) => s + c.amount, 0)) },
+    { label: '累计回款', value: fmt(data.reduce((s, c) => s + c.accumPayment, 0)) },
+    { label: '未回款金额', value: fmt(data.reduce((s, c) => s + c.unpaidAmount, 0)) },
+    { label: '执行中合同', value: data.filter(c => c.status === 'executing').length },
+    { label: '逾期合同', value: data.filter(c => c.unpaidAmount > 0 && c.expireDate < dayjs().format('YYYY-MM-DD')).length },
+  ]
+})
 
 const payForm = reactive({ amount: 0, channelFee: 0, method: '银行转账', actualDate: '', remark: '' })
 

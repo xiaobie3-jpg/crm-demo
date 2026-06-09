@@ -4,8 +4,10 @@
 
     <!-- 统计卡片 -->
     <div class="stat-cards" style="grid-template-columns:repeat(auto-fit, minmax(160px, 1fr))">
-      <a-card class="stat-card" v-for="s in stats" :key="s.label">
-        <div class="label">{{ s.label }}</div><div class="value" style="font-size:22px">{{ s.value }}</div>
+      <a-card class="stat-card" v-for="(s, idx) in stats" :key="s.label" :style="{ background: customerGradients[idx] }">
+        <div class="icon-bg"><component :is="customerIcons[idx]" /></div>
+        <div class="label">{{ s.label }}</div>
+        <div class="value" style="font-size:22px">{{ s.value }}</div>
       </a-card>
     </div>
 
@@ -123,7 +125,15 @@ import { customers, users, contracts, paymentRecords, channelFeeRecords, followu
 import { Message } from '@arco-design/web-vue'
 
 const router = useRouter()
-const allCustomers = ref([...customers])
+const customerGradients = [
+  'linear-gradient(135deg, #165dff 0%, #4080ff 100%)',
+  'linear-gradient(135deg, #00b42a 0%, #4cd263 100%)',
+  'linear-gradient(135deg, #f77234 0%, #ff9a5e 100%)',
+  'linear-gradient(135deg, #722ed1 0%, #a855f7 100%)',
+  'linear-gradient(135deg, #0fc6c2 0%, #5ce1e6 100%)',
+  'linear-gradient(135deg, #86909c 0%, #c9cdd4 100%)',
+]
+const customerIcons = ['IconUser', 'IconUserGroup', 'IconFile', 'IconMoney', 'IconSafe', 'IconCoin'] as any[]
 const showAdd = ref(false)
 const editingId = ref(0)
 const showFollowup = ref(false)

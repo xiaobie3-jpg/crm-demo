@@ -1,7 +1,8 @@
 <template>
   <a-layout>
-    <a-layout-sider :collapsed="appStore.collapsed" collapsible @collapse="appStore.toggleCollapse()" :width="240">
+    <a-layout-sider :collapsed="appStore.collapsed" collapsible @collapse="appStore.toggleCollapse()" :width="240" class="main-sider">
       <div class="logo">
+        <icon-apps class="logo-icon" />
         <span v-if="!appStore.collapsed" class="logo-text">CRM 系统</span>
         <span v-else class="logo-text-mini">CRM</span>
       </div>
@@ -44,17 +45,28 @@
     <a-layout>
       <a-layout-header class="layout-header">
         <a-breadcrumb>
-          <a-breadcrumb-item v-for="(item, idx) in crumbs" :key="idx">{{ item }}</a-breadcrumb-item>
+          <a-breadcrumb-item v-for="(item, idx) in crumbs" :key="idx">
+            <icon-home v-if="idx === 0" style="margin-right:4px" />{{ item }}
+          </a-breadcrumb-item>
         </a-breadcrumb>
         <div class="header-right">
-          <a-dropdown trigger="hover">
-            <a-tag color="arcoblue" style="cursor:pointer">{{ appStore.currentUser?.name }}</a-tag>
-            <template #content>
-              <a-doption @click="router.push('/profile')"><icon-user /> 个人中心</a-doption>
-              <a-doption @click="handleLogout"><icon-export /> 退出登录</a-doption>
-            </template>
-          </a-dropdown>
-          <a-tag>{{ appStore.currentUser?.dept }}</a-tag>
+          <a-space>
+            <a-tooltip content="消息通知">
+              <a-button type="text" shape="circle"><icon-bell /></a-button>
+            </a-tooltip>
+            <a-dropdown trigger="hover">
+              <a-space style="cursor:pointer;padding:4px 8px;border-radius:8px;transition:background 0.2s" class="user-dropdown">
+                <a-avatar :size="32" :style="{ background: 'linear-gradient(135deg,#165dff,#4080ff)' }">{{ appStore.currentUser?.name?.charAt(0) }}</a-avatar>
+                <span style="font-weight:600;font-size:14px">{{ appStore.currentUser?.name }}</span>
+                <icon-down style="color:var(--color-text-3)" />
+              </a-space>
+              <template #content>
+                <a-doption @click="router.push('/profile')"><icon-user /> 个人中心</a-doption>
+                <a-doption @click="handleLogout"><icon-export /> 退出登录</a-doption>
+              </template>
+            </a-dropdown>
+            <a-tag color="arcoblue" size="small" style="font-weight:500">{{ appStore.currentUser?.dept }}</a-tag>
+          </a-space>
         </div>
       </a-layout-header>
       <a-layout-content class="layout-content">
@@ -107,9 +119,31 @@ function handleLogout() {
 </script>
 
 <style scoped>
-.logo { height: 56px; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid var(--color-border-2); font-size: 18px; font-weight: 700; color: var(--color-primary-6); }
-.logo-text-mini { font-size: 16px; }
-.layout-header { display: flex; align-items: center; justify-content: space-between; padding: 0 20px; height: 48px; background: #fff; border-bottom: 1px solid var(--color-border-2); }
+.logo {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+  background: linear-gradient(135deg, #165dff 0%, #4080ff 100%);
+  color: #fff;
+}
+.logo-icon { font-size: 22px; }
+.logo-text { font-size: 18px; font-weight: 700; letter-spacing: 1px; }
+.logo-text-mini { font-size: 16px; font-weight: 700; }
+.main-sider :deep(.arco-layout-sider-children) { background: transparent; }
+.layout-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 56px;
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
 .header-right { display: flex; gap: 8px; align-items: center; }
+.user-dropdown:hover { background: #f2f7ff; }
 .layout-content { padding: 0; }
 </style>

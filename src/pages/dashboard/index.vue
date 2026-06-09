@@ -4,7 +4,8 @@
 
     <!-- 核心数据卡片 -->
     <div class="stat-cards">
-      <a-card class="stat-card" v-for="card in statCards" :key="card.label">
+      <a-card class="stat-card" v-for="(card, idx) in statCards" :key="card.label" :style="{ background: cardGradients[idx % cardGradients.length] }">
+        <div class="icon-bg"><component :is="cardIcons[idx % cardIcons.length]" /></div>
         <div class="label">{{ card.label }}</div>
         <div class="value">{{ card.value }}</div>
         <div class="sub">{{ card.sub }}</div>
@@ -63,6 +64,18 @@ import dayjs from 'dayjs'
 import { users, contracts, paymentRecords, paymentPlans, targets, customers, followups } from '../../mock/data'
 
 const fmt = (v: any) => v == null ? '--' : typeof v === 'number' ? v.toLocaleString('zh-CN') : v
+
+const cardGradients = [
+  'linear-gradient(135deg, #165dff 0%, #4080ff 100%)',
+  'linear-gradient(135deg, #00b42a 0%, #4cd263 100%)',
+  'linear-gradient(135deg, #f77234 0%, #ff9a5e 100%)',
+  'linear-gradient(135deg, #722ed1 0%, #a855f7 100%)',
+  'linear-gradient(135deg, #0fc6c2 0%, #5ce1e6 100%)',
+  'linear-gradient(135deg, #f53f3f 0%, #ff7d7d 100%)',
+  'linear-gradient(135deg, #86909c 0%, #c9cdd4 100%)',
+  'linear-gradient(135deg, #165dff 0%, #4080ff 100%)',
+]
+const cardIcons = ['IconUser', 'IconFile', 'IconMoney', 'IconBarChart', 'IconCalendar', 'IconCheckCircle', 'IconFire', 'IconStar'] as any[]
 
 const statCards = computed(() => {
   const today = dayjs().format('YYYY-MM-DD')
