@@ -171,10 +171,10 @@ const form = reactive({ name: '', code: '', contact: '', phone: '', source: '自
 const fwForm = reactive({ method: '电话', date: '', content: '' })
 
 const columns = [
-  { title: '负责人', slotName: 'ownerId', width: 70 },
-  { title: '客户编号', dataIndex: 'code', width: 80, sortable: { sortDirections: ['ascend', 'descend'] } },
-  { title: '客户等级', slotName: 'level', width: 90 },
-  { title: '客户名称', dataIndex: 'name', width: 140 },
+  { title: '负责人', slotName: 'ownerId', width: 70, fixed: 'left' },
+  { title: '客户编号', dataIndex: 'code', width: 80, sortable: { sortDirections: ['ascend', 'descend'] }, fixed: 'left' },
+  { title: '客户等级', slotName: 'level', width: 90, fixed: 'left' },
+  { title: '客户名称', dataIndex: 'name', width: 140, ellipsis: { showTooltip: true }, fixed: 'left' },
   { title: '电话', dataIndex: 'phone', width: 120 },
   { title: '分配日期', dataIndex: 'assignDate', width: 100, sortable: { sortDirections: ['ascend', 'descend'] } },
   { title: '客户来源', dataIndex: 'source', width: 100 },

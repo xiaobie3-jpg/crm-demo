@@ -3,7 +3,6 @@
     <div class="page-header">
       <h2>回款计划</h2>
       <a-space>
-        <a-button type="primary" @click="openAdd"><icon-plus /> 新增回款计划</a-button>
         <a-button @click="handleExport">导出</a-button>
       </a-space>
     </div>
@@ -79,58 +78,11 @@
         <template #ourReceivable="{ record }">{{ fmt(record.ourReceivable) }}</template>
         <template #actions="{ record }">
           <a-space size="small">
-            <a-button type="text" size="mini" @click="openEdit(record)">编辑</a-button>
-            <a-button type="text" size="mini" status="danger" @click="handleDelete(record)">删除</a-button>
+            <a-button type="text" size="mini" @click="goContractDetail(record)">查看合同</a-button>
           </a-space>
         </template>
       </a-table>
     </a-card>
-
-    <a-modal v-model:visible="showModal" :title="modalTitle" @ok="savePlan" @cancel="resetForm" width="600px">
-      <a-form :model="form" layout="vertical">
-        <a-row :gutter="16">
-          <a-col :span="24">
-            <a-form-item label="合同">
-              <a-select v-model="form.contractId" placeholder="请选择合同" :disabled="!!editId">
-                <a-option v-for="c in contracts" :key="c.id" :value="c.id">
-                  {{ c.name }} ({{ c.contractNo }})
-                </a-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :span="12">
-            <a-form-item label="阶段">
-              <a-input v-model="form.phase" placeholder="如：首付款、中期款、尾款" />
-            </a-form-item>
-          </a-col>
-          <a-col :span="12">
-            <a-form-item label="计划回款日期">
-              <a-date-picker v-model="form.planDate" style="width:100%" />
-            </a-form-item>
-          </a-col>
-          <a-col :span="8">
-            <a-form-item label="金额">
-              <a-input-number v-model="form.amount" :min="0" style="width:100%" placeholder="元" />
-            </a-form-item>
-          </a-col>
-          <a-col :span="8">
-            <a-form-item label="渠道费">
-              <a-input-number v-model="form.channelFee" :min="0" style="width:100%" placeholder="元" />
-            </a-form-item>
-          </a-col>
-          <a-col :span="8">
-            <a-form-item label="我方应收">
-              <a-input-number :model-value="computedOurReceivable" disabled style="width:100%" />
-            </a-form-item>
-          </a-col>
-          <a-col :span="24">
-            <a-form-item label="备注">
-              <a-textarea v-model="form.remark" :rows="2" />
-            </a-form-item>
-          </a-col>
-        </a-row>
-      </a-form>
-    </a-modal>
   </div>
 </template>
 
@@ -236,95 +188,9 @@ const filteredData = computed(() => {
 
 function fetchData() { /* 由 computed 驱动筛选，无需额外操作 */ }
 
-// ============ 新增/编辑弹窗 ============
-const showModal = ref(false)
-const editId = ref<number | null>(null)
-
-const modalTitle = computed(() => (editId.value ? '编辑回款计划' : '新增回款计划'))
-
-const emptyForm = () => ({
-  contractId: undefined as number | undefined,
-  phase: '',
-  amount: 0,
-  channelFee: 0,
-  planDate: '',
-  remark: '',
-})
-
-const form = reactive(emptyForm())
-
-const computedOurReceivable = computed(() => {
-  const a = Number(form.amount) || 0
-  const c = Number(form.channelFee) || 0
-  return a - c
-})
-
-function resetForm() {
-  editId.value = null
-  Object.assign(form, emptyForm())
-}
-
-function openAdd() {
-  resetForm()
-  showModal.value = true
-}
-
-function openEdit(record: PaymentPlan) {
-  resetForm()
-  editId.value = record.id
-  form.contractId = record.contractId
-  form.phase = record.phase
-  form.amount = record.amount
-  form.channelFee = record.channelFee
-  form.planDate = record.planDate
-  form.remark = record.remark
-  showModal.value = true
-}
-
-function savePlan() {
-  if (!form.contractId) {
-    return
-  }
-  const ourReceivable = computedOurReceivable.value
-
-  if (editId.value) {
-    // 编辑
-    const idx = allPlans.value.findIndex(p => p.id === editId.value)
-    if (idx !== -1) {
-      allPlans.value[idx] = {
-        ...allPlans.value[idx],
-        contractId: form.contractId,
-        phase: form.phase,
-        amount: form.amount,
-        channelFee: form.channelFee,
-        ourReceivable,
-        planDate: form.planDate || dayjs().format('YYYY-MM-DD'),
-        remark: form.remark,
-      }
-    }
-  } else {
-    // 新增
-    const newPlan: PaymentPlan = {
-      id: Math.max(0, ...allPlans.value.map(p => p.id)) + 1,
-      contractId: form.contractId!,
-      phase: form.phase,
-      amount: form.amount,
-      channelFee: form.channelFee,
-      ourReceivable,
-      planDate: form.planDate || dayjs().format('YYYY-MM-DD'),
-      remark: form.remark,
-      status: 'pending',
-    }
-    allPlans.value.push(newPlan)
-  }
-
-  showModal.value = false
-  resetForm()
-}
-
-// ============ 删除 ============
-function handleDelete(record: PaymentPlan) {
-  allPlans.value = allPlans.value.filter(p => p.id !== record.id)
+function goContractDetail(record: PaymentPlan) {
+  const ct = getContract(record.contractId)
+  if (ct) window.location.href = '#/contract/detail/' + ct.id
 }
 
 // ============ 导出 ============
@@ -334,9 +200,9 @@ function handleExport() {
 
 // ============ 表格列定义 ============
 const columns = [
-  { title: '负责人', slotName: 'ownerName', width: 80 },
-  { title: '客户名称', slotName: 'customerName', width: 130 },
-  { title: '项目名称', slotName: 'contractName', width: 180, ellipsis: { showTooltip: true } },
+  { title: '负责人', slotName: 'ownerName', width: 80, fixed: 'left' as const },
+  { title: '客户名称', slotName: 'customerName', width: 130, fixed: 'left' as const },
+  { title: '项目名称', slotName: 'contractName', width: 180, ellipsis: { showTooltip: true }, fixed: 'left' as const },
   { title: '合同编号', slotName: 'contractNo', width: 200 },
   { title: '客户来源', slotName: 'source', width: 110 },
   { title: '产品类型', slotName: 'productType', width: 100 },
@@ -348,7 +214,7 @@ const columns = [
   { title: '我方应收', slotName: 'ourReceivable', width: 100 },
   { title: '计划回款日期', dataIndex: 'planDate', width: 120 },
   { title: '备注', dataIndex: 'remark', width: 150, ellipsis: { showTooltip: true } },
-  { title: '操作', slotName: 'actions', width: 200, fixed: 'right' as const },
+  { title: '操作', slotName: 'actions', width: 100, fixed: 'right' as const },
 ]
 </script>
 

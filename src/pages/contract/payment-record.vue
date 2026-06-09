@@ -392,9 +392,9 @@ function handleExport() {
 
 // ============ 表格列定义 ============
 const columns = [
-  { title: '负责人', slotName: 'ownerName', width: 80 },
-  { title: '客户名称', slotName: 'customerName', width: 130 },
-  { title: '项目名称', slotName: 'contractName', width: 180, ellipsis: { showTooltip: true } },
+  { title: '负责人', slotName: 'ownerName', width: 80, fixed: 'left' },
+  { title: '客户名称', slotName: 'customerName', width: 130, fixed: 'left' },
+  { title: '项目名称', slotName: 'contractName', width: 180, ellipsis: { showTooltip: true }, fixed: 'left' },
   { title: '合同编号', slotName: 'contractNo', width: 200 },
   { title: '客户来源', slotName: 'source', width: 110 },
   { title: '产品类型', slotName: 'productType', width: 100 },

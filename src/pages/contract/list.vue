@@ -89,11 +89,13 @@
           </a-tag>
         </template>
         <template #actions="{ record }">
-          <a-space size="small">
+          <div style="display:flex;flex-direction:column;gap:4px">
             <a-button type="text" size="mini" @click.stop="goDetail(record)">详情</a-button>
-            <a-button v-if="record.unpaidAmount > 0" type="text" size="mini" status="success" @click.stop="openPaymentModal(record)">新增回款</a-button>
-            <a-button v-if="sysConfig.contractApproval !== false" type="text" size="mini" status="warning" @click.stop="submitApproval(record)">提交审核</a-button>
-          </a-space>
+            <a-space size="small">
+              <a-button v-if="record.unpaidAmount > 0" type="text" size="mini" status="success" @click.stop="openPaymentModal(record)">新增回款</a-button>
+              <a-button v-if="sysConfig.contractApproval !== false" type="text" size="mini" status="warning" @click.stop="submitApproval(record)">提交审核</a-button>
+            </a-space>
+          </div>
         </template>
       </a-table>
     </a-card>
@@ -308,9 +310,9 @@ function getContractNameStyle(record: any) {
 }
 
 const columns = [
-  { title: '负责人', slotName: 'ownerName', width: 70 },
-  { title: '客户名称', slotName: 'customerName', width: 140 },
-  { title: '项目名称', slotName: 'contractName', width: 180 },
+  { title: '负责人', slotName: 'ownerName', width: 70, fixed: 'left' },
+  { title: '客户名称', slotName: 'customerName', width: 140, ellipsis: { showTooltip: true }, fixed: 'left' },
+  { title: '项目名称', slotName: 'contractName', width: 180, ellipsis: { showTooltip: true }, fixed: 'left' },
   { title: '合同编号', dataIndex: 'contractNo', width: 200 },
   { title: '客户来源', dataIndex: 'source', width: 110 },
   { title: '产品类型', dataIndex: 'productType', width: 100 },

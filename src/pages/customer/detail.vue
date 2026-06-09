@@ -32,8 +32,10 @@
         <div class="detail-section">
           <h3>数据概览</h3>
           <div class="stat-cards" style="grid-template-columns:repeat(5,1fr)">
-            <a-card class="stat-card" v-for="s in overviewStats" :key="s.label">
-              <div class="label">{{ s.label }}</div><div class="value" style="font-size:20px">{{ s.value }}</div>
+            <a-card class="stat-card" v-for="(s, idx) in overviewStats" :key="s.label" :style="{ background: s.gradient }">
+              <div class="icon-bg"><component :is="s.icon" /></div>
+              <div class="label">{{ s.label }}</div>
+              <div class="value" style="font-size:20px">{{ s.value }}</div>
             </a-card>
           </div>
         </div>
@@ -98,15 +100,24 @@ const custContracts = computed(() => customer.value ? contracts.filter(c => c.cu
 const custPayments = computed(() => customer.value ? paymentRecords.filter(p => custContracts.value.some(ct => ct.id === p.contractId)) : [])
 const custFollowups = computed(() => customer.value ? followups.filter(f => f.customerId === customer.value.id) : [])
 
-const overviewStats = computed(() => ({
-  stats: [
+const overviewStats = computed(() => {
+  const gradients = [
+    'linear-gradient(135deg, #165dff 0%, #4080ff 100%)',
+    'linear-gradient(135deg, #00b42a 0%, #4cd263 100%)',
+    'linear-gradient(135deg, #f77234 0%, #ff9a5e 100%)',
+    'linear-gradient(135deg, #722ed1 0%, #a855f7 100%)',
+    'linear-gradient(135deg, #0fc6c2 0%, #5ce1e6 100%)',
+  ]
+  const icons = ['IconFile', 'IconMoney', 'IconSafe', 'IconCoin', 'IconMessage'] as any[]
+  const stats = [
     { label: '签约合同数', value: custContracts.value.length },
     { label: '累计签约金额', value: custContracts.value.reduce((s, c) => s + c.amount, 0).toLocaleString('zh-CN') },
     { label: '累计回款金额', value: custPayments.value.filter(p => p.status === 'approved').reduce((s, p) => s + p.amount, 0).toLocaleString('zh-CN') },
     { label: '未回款金额', value: custContracts.value.reduce((s, c) => s + c.unpaidAmount, 0).toLocaleString('zh-CN') },
     { label: '跟进次数', value: custFollowups.value.length },
   ]
-}).stats)
+  return stats.map((s, i) => ({ ...s, gradient: gradients[i], icon: icons[i] }))
+})
 
 const contractCols = [
   { title: '合同编号', dataIndex: 'contractNo', width: 200 },

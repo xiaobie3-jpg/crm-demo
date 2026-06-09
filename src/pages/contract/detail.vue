@@ -6,7 +6,7 @@
 
     <template v-else>
       <div class="page-header">
-        <a-button type="text" @click="$router.back()">
+        <a-button type="text" @click="$router.push('/contract/list')">
           <template #icon><icon-left /></template>
           返回
         </a-button>

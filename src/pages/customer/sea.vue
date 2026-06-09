@@ -53,7 +53,7 @@ const filter = reactive({ level: '', source: '', assignDateRange: [] as any[], k
 const columns = [
   { title: '客户编号', dataIndex: 'code', width: 80 },
   { title: '客户等级', dataIndex: 'level', width: 90 },
-  { title: '客户名称', dataIndex: 'name', width: 140 },
+  { title: '客户名称', dataIndex: 'name', width: 140, ellipsis: { showTooltip: true } },
   { title: '电话', dataIndex: 'phone', width: 120 },
   { title: '分配日期', dataIndex: 'assignDate', width: 100 },
   { title: '客户来源', dataIndex: 'source', width: 100 },
@@ -62,7 +62,7 @@ const columns = [
   { title: '最近往来日期', dataIndex: 'latestFollowupDate', width: 110 },
   { title: '客户标签', slotName: 'tags', width: 160 },
   { title: '公海进入时间', dataIndex: 'seaEnterDate', width: 110 },
-  { title: '备注', dataIndex: 'remark', width: 100 },
+  { title: '备注', dataIndex: 'remark', width: 100, ellipsis: { showTooltip: true } },
   { title: '操作', slotName: 'actions', width: 120, fixed: 'right' },
 ]
 

@@ -49,7 +49,7 @@ const form = reactive({ customerId: 1, method: '电话', date: '', content: '' }
 
 const columns = [
   { title: '负责人', slotName: 'ownerName', width: 70 },
-  { title: '客户名称', slotName: 'customerName', width: 130 },
+  { title: '客户名称', slotName: 'customerName', width: 130, ellipsis: { showTooltip: true } },
   { title: '跟进内容', dataIndex: 'content', ellipsis: { showTooltip: true } },
   { title: '跟进方式', dataIndex: 'method', width: 80 },
   { title: '跟进日期', dataIndex: 'date', width: 100 },
