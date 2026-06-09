@@ -1,12 +1,14 @@
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html, body, #app { height: 100%; width: 100%; }
+html, body, #app { height: 100%; width: 100%; margin: 0; padding: 0; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans SC', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--color-text-1);
   background: #f0f2f5;
+  box-sizing: border-box;
 }
+*, *::before, *::after { box-sizing: inherit; }
+h1, h2, h3, h4, h5, h6, p { margin: 0; }
 
 /* ===== Arco 组件全局覆盖 ===== */
 .arco-layout { height: 100vh; }
