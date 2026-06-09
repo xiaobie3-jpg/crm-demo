@@ -5,7 +5,7 @@ export interface User {
   id: number; name: string; role: 'admin' | 'manager' | 'sales'; dept: string;
 }
 export const users: User[] = [
-  { id: 1, name: '大王', role: 'admin', dept: '管理层' },
+  { id: 1, name: 'admin', role: 'admin', dept: '管理层' },
   { id: 2, name: '张三', role: 'manager', dept: '销售一部' },
   { id: 3, name: '李四', role: 'sales', dept: '销售一部' },
   { id: 4, name: '王五', role: 'sales', dept: '销售一部' },
@@ -28,7 +28,7 @@ export const customers: Customer[] = [
   { id: 5, ownerId: 6, code: 'C005', level: '意向客户', name: '分时租赁科技', contact: '杨经理', phone: '13800138005', assignDate: '2026-03-15', source: '百度', latestFollowup: '发送小程序案例', latestFollowupDate: '2026-06-03', tags: ['小程序', 'WEB'], remark: '', createdAt: '2026-03-15', status: 'normal' },
   { id: 6, ownerId: 6, code: 'C006', level: '潜在客户', name: '顾好家社区', contact: '周主任', phone: '13800138006', assignDate: '2026-04-20', source: 'GEO', latestFollowup: 'Demo演示中', latestFollowupDate: '2026-06-06', tags: ['WEB'], remark: 'Web demo开发中', createdAt: '2026-04-20', status: 'normal' },
   { id: 7, ownerId: 3, code: 'C007', level: '有效客户', name: '智慧物联', contact: '吴总', phone: '13800138007', assignDate: '2026-05-01', source: '淘宝', latestFollowup: '初次拜访', latestFollowupDate: '2026-05-20', tags: ['物联网', 'AI'], remark: '', createdAt: '2026-05-01', status: 'sea', seaEnterDate: '2026-06-01', historyOwners: [{ userId: 3, name: '李四', date: '2026-05-01' }] },
-  { id: 8, ownerId: 0, code: 'C008', level: '潜在客户', name: '云端科技', contact: '黄总', phone: '13800138008', assignDate: '2026-01-05', source: '其他', latestFollowup: '电话沟通', latestFollowupDate: '2026-02-10', tags: [], remark: '', createdAt: '2026-01-05', status: 'sea', seaEnterDate: '2026-05-01', historyOwners: [{ userId: 1, name: '大王', date: '2026-01-05' }] },
+  { id: 8, ownerId: 0, code: 'C008', level: '潜在客户', name: '云端科技', contact: '黄总', phone: '13800138008', assignDate: '2026-01-05', source: '其他', latestFollowup: '电话沟通', latestFollowupDate: '2026-02-10', tags: [], remark: '', createdAt: '2026-01-05', status: 'sea', seaEnterDate: '2026-05-01', historyOwners: [{ userId: 1, name: 'admin', date: '2026-01-05' }] },
   { id: 9, ownerId: 4, code: 'C009', level: '意向客户', name: '星云数据', contact: '郑经理', phone: '13800138009', assignDate: '2026-05-10', source: '百度', latestFollowup: '需求调研完成', latestFollowupDate: '2026-06-04', tags: ['AI', '客户端'], remark: '', createdAt: '2026-05-10', status: 'normal' },
   { id: 10, ownerId: 6, code: 'C010', level: '有效客户', name: '绿源环保', contact: '孙主任', phone: '13800138010', assignDate: '2026-06-01', source: '自拓', latestFollowup: '初次联系', latestFollowupDate: '2026-06-01', tags: ['H5', 'WEB'], remark: '', createdAt: '2026-06-01', status: 'normal' },
 ]
