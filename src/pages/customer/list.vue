@@ -134,6 +134,7 @@ const customerGradients = [
   'linear-gradient(135deg, #86909c 0%, #c9cdd4 100%)',
 ]
 const customerIcons = ['IconUser', 'IconUserGroup', 'IconFile', 'IconMoney', 'IconSafe', 'IconCoin'] as any[]
+const allCustomers = ref([...customers])
 const showAdd = ref(false)
 const editingId = ref(0)
 const showFollowup = ref(false)
